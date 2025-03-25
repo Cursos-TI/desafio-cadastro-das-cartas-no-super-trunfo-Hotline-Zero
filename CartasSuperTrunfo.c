@@ -4,12 +4,8 @@
 // Tema 1 - Cadastro das Cartas
 // Este código inicial serve como base para o desenvolvimento do sistema de cadastro de cartas de cidades.
 // Siga os comentários para implementar cada parte do desafio.
-//Teste larissa
 
-int main() {
-    // Sugestão: Defina variáveis separadas para cada atributo da cidade.
-    // Exemplos de atributos: código da cidade, nome, população, área, PIB, número de pontos turísticos.
-    // Definição da estrutura 'Carta' que representa uma carta com várias informações
+// Definição da estrutura 'Carta' que representa uma carta com várias informações
 typedef struct {
     char estado;                // Estado representado pela carta (A-H)
     char codigo[4];             // Código da carta (ex: A01)
@@ -20,10 +16,7 @@ typedef struct {
     int pontosTuristicos;       // Número de pontos turísticos na cidade
 } Carta;
 
-    // Cadastro das Cartas:
-    // Sugestão: Utilize a função scanf para capturar as entradas do usuário para cada atributo.
-    // Solicite ao usuário que insira as informações de cada cidade, como o código, nome, população, área, etc.
-    // Função para ler os dados de uma carta do usuário
+// Função para ler os dados de uma carta do usuário
 void lerCarta(Carta *carta) {
     printf("Digite o estado (A-H): ");
     scanf(" %c", &carta->estado);  // Lê o estado
@@ -47,7 +40,7 @@ void lerCarta(Carta *carta) {
     scanf("%d", &carta->pontosTuristicos);  // Lê o número de pontos turísticos
 }
 
-    // Função para exibir os dados de uma carta
+// Função para exibir os dados de uma carta
 void exibirCarta(Carta carta, int numero) {
     printf("\nCarta %d:\n", numero);  // Exibe o número da carta
     printf("Estado: %c\n", carta.estado);  // Exibe o estado
@@ -59,12 +52,22 @@ void exibirCarta(Carta carta, int numero) {
     printf("Número de Pontos Turísticos: %d\n", carta.pontosTuristicos);  // Exibe o número de pontos turísticos
 }
 
-    // Função para exibir os dados de uma carta
+// Função principal do programa
+int main() {
+    Carta carta1, carta2;  // Declara duas variáveis do tipo 'Carta'
 
-}
-    // Exibição dos Dados das Cartas:
-    // Sugestão: Utilize a função printf para exibir as informações das cartas cadastradas de forma clara e organizada.
-    // Exiba os valores inseridos para cada atributo da cidade, um por linha.
+    // Lê e exibe os dados da primeira carta
+    printf("Insira os dados da primeira carta:\n");
+    lerCarta(&carta1);
 
-    return 0;
+    // Lê e exibe os dados da segunda carta
+    printf("\nInsira os dados da segunda carta:\n");
+    lerCarta(&carta2);
+
+    // Exibe os dados das cartas
+    exibirCarta(carta1, 1);
+    exibirCarta(carta2, 2);
+
+    return 0;  // Retorna 0 para indicar que o programa terminou com sucesso
 }
+
