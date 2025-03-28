@@ -14,6 +14,8 @@ typedef struct {
     float area;                 // Área da cidade em km²
     float pib;                  // PIB da cidade em bilhões de reais
     int pontosTuristicos;       // Número de pontos turísticos na cidade
+    float denscidadepopul;       // Densidade da população (população dividida pela área)
+    float pibpercapita;         // PIB per capita (PIB dividido pela população)
 } Carta;
 
 // Função para ler os dados de uma carta do usuário
@@ -38,7 +40,21 @@ void lerCarta(Carta *carta) {
 
     printf("Digite o número de pontos turísticos: ");
     scanf("%d", &carta->pontosTuristicos);  // Lê o número de pontos turísticos
+    
+    // Calcula a densidade da população e o PIB per capita
+    if (carta->area != 0) {
+        carta->denscidadepopul = carta->populacao / carta->area;
+    } else {
+        carta->denscidadepopul = 0; // Valor padrão para evitar erro
+    }
+    
+    if (carta->populacao != 0) {
+        carta->pibpercapita = carta->pib / carta->populacao;
+    } else {
+        carta->pibpercapita = 0; // Valor padrão para evitar erro
+    }
 }
+
 
 // Função para exibir os dados de uma carta
 void exibirCarta(Carta carta, int numero) {
@@ -50,6 +66,8 @@ void exibirCarta(Carta carta, int numero) {
     printf("Área: %.2f km²\n", carta.area);  // Exibe a área
     printf("PIB: %.2f bilhões de reais\n", carta.pib);  // Exibe o PIB
     printf("Número de Pontos Turísticos: %d\n", carta.pontosTuristicos);  // Exibe o número de pontos turísticos
+    printf("Densidade da População: %.2f\n", carta.denscidadepopul);  // Exibe a densidade da população
+    printf("PIB per Capita: %.2f\n", carta.pibpercapita);  // Exibe o PIB per capita
 }
 
 // Função principal do programa
