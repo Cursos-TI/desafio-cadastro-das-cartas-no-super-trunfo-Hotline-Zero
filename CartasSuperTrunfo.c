@@ -10,12 +10,13 @@ typedef struct {
     char estado;                // Estado representado pela carta (A-H)
     char codigo[4];             // Código da carta (ex: A01)
     char nomeCidade[50];        // Nome da cidade
-    int populacao;              // População da cidade
+    unsigned long int populacao;   // População da cidade aterada para unsigned long int
     float area;                 // Área da cidade em km²
     float pib;                  // PIB da cidade em bilhões de reais
     int pontosTuristicos;       // Número de pontos turísticos na cidade
     float denscidadepopul;       // Densidade da população (população dividida pela área)
     float pibpercapita;         // PIB per capita (PIB dividido pela população)
+    float superpoder;           // Superpoder da carta 
 } Carta;
 
 // Função para ler os dados de uma carta do usuário
@@ -52,6 +53,11 @@ void lerCarta(Carta *carta) {
         carta->pibpercapita = carta->pib / carta->populacao;
     } else {
         carta->pibpercapita = 0; // Valor padrão para evitar erro
+
+        //Calcula o superpoder
+        float inversoDensidade = (carta->area !=0) ? carta->populacao / carta->area : 0;
+        carta->superpoder = carta->populacao + carta->area + carta->pib +
+                            carta->pontosTuristicos + carta->pibpercapita + inversoDensidade; 
     }
 }
 
@@ -62,14 +68,32 @@ void exibirCarta(Carta carta, int numero) {
     printf("Estado: %c\n", carta.estado);  // Exibe o estado
     printf("Código: %s\n", carta.codigo);  // Exibe o código
     printf("Nome da Cidade: %s\n", carta.nomeCidade);  // Exibe o nome da cidade
-    printf("População: %d\n", carta.populacao);  // Exibe a população
+    printf("População: %lu\n", carta.populacao);  // Exibe a população usando %lu para unsigned long int
     printf("Área: %.2f km²\n", carta.area);  // Exibe a área
     printf("PIB: %.2f bilhões de reais\n", carta.pib);  // Exibe o PIB
     printf("Número de Pontos Turísticos: %d\n", carta.pontosTuristicos);  // Exibe o número de pontos turísticos
     printf("Densidade da População: %.2f\n", carta.denscidadepopul);  // Exibe a densidade da população
     printf("PIB per Capita: %.2f\n", carta.pibpercapita);  // Exibe o PIB per capita
+    printf("Superpoder: %.2f\n", carta.superpoder); // Exibe o superpoder
 }
+// Função para comparar atributos entre duas cartas e exibir resultados
+void compararCartas(Carta carta1, Carta carta2) {
+    printf("\nComparação de Cartas:\n");
 
+    #define COMPARAR(atributo, nome, regra) \
+        do { \
+            int resultado = (regra) ? 1 : 0; \
+            printf("%s: Carta 1 venceu (%d)\n", nome, resultado); \
+        } while (0)
+
+    COMPARAR(carta1.populacao > carta2.populacao, "População", carta1.populacao > carta2.populacao);
+    COMPARAR(carta1.area > carta2.area, "Área", carta1.area > carta2.area);
+    COMPARAR(carta1.pib > carta2.pib, "PIB", carta1.pib > carta2.pib);
+    COMPARAR(carta1.pontosTuristicos > carta2.pontosTuristicos, "Pontos Turísticos", carta1.pontosTuristicos > carta2.pontosTuristicos);
+    COMPARAR(carta1.denscidadepopul < carta2.denscidadepopul, "Densidade Populacional", carta1.denscidadepopul < carta2.denscidadepopul);
+    COMPARAR(carta1.pibpercapita > carta2.pibpercapita, "PIB per Capita", carta1.pibpercapita > carta2.pibpercapita);
+    COMPARAR(carta1.superPoder > carta2.superPoder, "Super Poder", carta1.superPoder > carta2.superPoder);
+}
 // Função principal do programa
 int main() {
     Carta carta1, carta2;  // Declara duas variáveis do tipo 'Carta'
