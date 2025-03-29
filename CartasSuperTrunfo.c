@@ -31,7 +31,7 @@ void lerCarta(Carta *carta) {
     scanf(" %[^\n]s", carta->nomeCidade);  // Lê o nome da cidade
 
     printf("Digite a população: ");
-    scanf("%d", &carta->populacao);  // Lê a população
+    scanf("%lu", &carta->populacao);  // Lê a população modificado para unsigned long int
 
     printf("Digite a área (em km²): ");
     scanf("%f", &carta->area);  // Lê a área
@@ -42,23 +42,14 @@ void lerCarta(Carta *carta) {
     printf("Digite o número de pontos turísticos: ");
     scanf("%d", &carta->pontosTuristicos);  // Lê o número de pontos turísticos
     
-    // Calcula a densidade da população e o PIB per capita
-    if (carta->area != 0) {
-        carta->denscidadepopul = carta->populacao / carta->area;
-    } else {
-        carta->denscidadepopul = 0; // Valor padrão para evitar erro
-    }
-    
-    if (carta->populacao != 0) {
-        carta->pibpercapita = carta->pib / carta->populacao;
-    } else {
-        carta->pibpercapita = 0; // Valor padrão para evitar erro
+    // Calcula a densidade populacional e o PIB per capita
+    carta->denscidadepopul = (carta->area != 0) ? carta->populacao / carta->area : 0;
+    carta->pibpercapita = (carta->populacao != 0) ? carta->pib / carta->populacao : 0;
 
         //Calcula o superpoder
-        float inversoDensidade = (carta->area !=0) ? carta->populacao / carta->area : 0;
-        carta->superpoder = carta->populacao + carta->area + carta->pib +
-                            carta->pontosTuristicos + carta->pibpercapita + inversoDensidade; 
-    }
+    float inversoDensidade = (carta->area != 0) ? carta->populacao / carta->area : 0;
+    carta->superpoder = carta->populacao + carta->area + carta->pib +
+                        carta->pontosTuristicos + carta->pibpercapita + inversoDensidade;
 }
 
 
@@ -80,20 +71,23 @@ void exibirCarta(Carta carta, int numero) {
 void compararCartas(Carta carta1, Carta carta2) {
     printf("\nComparação de Cartas:\n");
 
-    #define COMPARAR(atributo, nome, regra) \
+    #define COMPARAR(nome, regra) \
         do { \
-            int resultado = (regra) ? 1 : 0; \
-            printf("%s: Carta 1 venceu (%d)\n", nome, resultado); \
+            if (regra) { \
+                printf("%s: Carta 1 venceu\n", nome); \
+            } else { \
+                printf("%s: Carta 2 venceu\n", nome); \
+            } \
         } while (0)
-
-    COMPARAR(carta1.populacao > carta2.populacao, "População", carta1.populacao > carta2.populacao);
-    COMPARAR(carta1.area > carta2.area, "Área", carta1.area > carta2.area);
-    COMPARAR(carta1.pib > carta2.pib, "PIB", carta1.pib > carta2.pib);
-    COMPARAR(carta1.pontosTuristicos > carta2.pontosTuristicos, "Pontos Turísticos", carta1.pontosTuristicos > carta2.pontosTuristicos);
-    COMPARAR(carta1.denscidadepopul < carta2.denscidadepopul, "Densidade Populacional", carta1.denscidadepopul < carta2.denscidadepopul);
-    COMPARAR(carta1.pibpercapita > carta2.pibpercapita, "PIB per Capita", carta1.pibpercapita > carta2.pibpercapita);
-    COMPARAR(carta1.superPoder > carta2.superPoder, "Super Poder", carta1.superPoder > carta2.superPoder);
-}
+    COMPARAR("População", carta1.populacao > carta2.populacao);
+    COMPARAR("População", carta1.populacao > carta2.populacao);
+    COMPARAR("Área", carta1.area > carta2.area);
+    COMPARAR("PIB", carta1.pib > carta2.pib);
+    COMPARAR("Pontos Turísticos", carta1.pontosTuristicos > carta2.pontosTuristicos);
+    COMPARAR("Densidade Populacional", carta1.denscidadepopul < carta2.denscidadepopul);
+    COMPARAR("PIB per Capita", carta1.pibpercapita > carta2.pibpercapita);
+        COMPARAR("Super Poder", carta1.superpoder > carta2.superpoder);
+    }
 // Função principal do programa
 int main() {
     Carta carta1, carta2;  // Declara duas variáveis do tipo 'Carta'
@@ -109,6 +103,10 @@ int main() {
     // Exibe os dados das cartas
     exibirCarta(carta1, 1);
     exibirCarta(carta2, 2);
+
+        // Adiciona a chamada para comparar as cartas
+        compararCartas(carta1, carta2);
+
 
     return 0;  // Retorna 0 para indicar que o programa terminou com sucesso
 }
